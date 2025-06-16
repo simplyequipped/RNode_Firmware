@@ -110,6 +110,11 @@
   #define MODEL_11            0x11 // RAK4631, 433 Mhz
   #define MODEL_12            0x12 // RAK4631, 868 Mhz
 
+  #define PRODUCT_RNODE_PRO   0x20
+  #define BOARD_RNODE_PRO_V1  0x52
+  #define MODEL_21            0x21 // RAK4630, 433 Mhz
+  #define MODEL_22            0x22 // RAK4630, 868 Mhz
+
   #define PRODUCT_HMBRW       0xF0
   #define BOARD_HMBRW         0x32
   #define BOARD_HUZZAH32      0x34
@@ -137,6 +142,8 @@
 
   #ifndef MODEM
     #if BOARD_MODEL == BOARD_RAK4631
+      #define MODEM SX1262
+    #elif BOARD_MODEL == BOARD_RNODE_PRO_V1
       #define MODEM SX1262
     #elif BOARD_MODEL == BOARD_GENERIC_NRF52
       #define MODEM SX1262
@@ -818,6 +825,45 @@
       const int DISPLAY_CLK = PIN_T114_TFT_SCK;
       const int DISPLAY_BL_PIN = PIN_T114_TFT_BLGT;
       const int DISPLAY_RST = PIN_T114_TFT_RST;
+
+    #elif BOARD_MODEL == BOARD_RNODE_PRO_V1
+      #define HAS_EEPROM false
+      #define HAS_DISPLAY false
+      #define HAS_BLUETOOTH false
+      #define HAS_BLE true
+      #define HAS_CONSOLE false
+      #define HAS_PMU true
+      #define HAS_NP true
+      #define HAS_SD false
+      #define HAS_TCXO true
+      #define HAS_RF_SWITCH_RX_TX true
+      #define HAS_BUSY true
+      #define HAS_INPUT true
+      #define DIO2_AS_RF_SWITCH true
+      #define CONFIG_UART_BUFFER_SIZE 6144
+      #define CONFIG_QUEUE_SIZE 6144
+      #define CONFIG_QUEUE_MAX_LENGTH 200
+      #define EEPROM_SIZE 296
+      #define EEPROM_OFFSET EEPROM_SIZE-EEPROM_RESERVED
+      #define BLE_MANUFACTURER "Simply Equipped"
+      #define BLE_MODEL "RNode Pro"
+
+      const int pin_btn_usr1 = 9;
+      const int pin_np = 27;
+
+      // Following pins are for the sx1262
+      const int pin_rxen = 37;
+      const int pin_reset = 38;
+      const int pin_cs = 42;
+      const int pin_sclk = 43;
+      const int pin_mosi = 44;
+      const int pin_miso = 45;
+      const int pin_busy = 46;
+      const int pin_dio = 47;
+
+      const int pin_led_rx = LED_BLUE;
+      const int pin_led_tx = LED_GREEN;
+      const int pin_tcxo_enable = -1;
 
     #else
       #error An unsupported nRF board was selected. Cannot compile RNode firmware.
